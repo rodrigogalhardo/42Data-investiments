@@ -1,0 +1,221 @@
+﻿@using _42Data.Investiments.Web.Models.Wallet;
+
+@model WalletViewModel
+
+@{
+    ViewData["Title"] = "Dashboard_5";
+}
+
+<div class="wrapper wrapper-content animated fadeIn">
+
+    <div class="p-w-md m-t-sm">
+        <div class="row">
+
+            <div class="col-sm-4">
+                <h1 class="m-b-xs">
+                    @Model.SaldoTotal
+                </h1>
+                <small>
+                    Saldo total da sua conta
+                </small>
+            </div>
+            <div class="col-sm-4">
+                <h1 class="m-b-xs">
+                    @Model.LucroTotal
+                </h1>
+                <small>
+                    (R$) Lucro total
+                </small>
+            </div>
+            <div class="col-sm-4">
+
+                <div class="row m-t-xs">
+                    <div class="col-xs-6">
+                        <h5 class="m-b-xs">(R$) Investimento Total</h5>
+                        <h1 class="no-margins">@Model.InvestimentoTotal</h1>
+                        <div class="font-bold text-navy"></div>
+                    </div>
+                    <div class="col-xs-6">
+                        <h5 class="m-b-xs">(R$) Comissão total paga</h5>
+                        <h1 class="no-margins">@Model.ComissaoTotalPaga</h1>
+                        <div class="font-bold text-navy"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="small pull-left col-md-3 m-l-lg m-t-md">
+                    <strong>(R$)</strong> Gráfico de variação de investimento
+                </div>
+                <div class="small pull-right col-md-3 m-t-md text-right" hidden>
+                    <strong>There are many</strong> variations of passages of Lorem Ipsum available, but the majority have suffered.
+                </div>
+                <div class="flot-chart m-b-xl">
+                    <div class="flot-chart-content" id="flot-dashboard5-chart"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="product_name">Tabela Mensal</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label class="control-label" for="price">(R$) Valor do deposito</label>
+                                    <input type="text" id="price" name="price" value="" placeholder="0,00" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label class="control-label" for="status">&nbsp;</label>
+                                    <button type="button" class="btn btn-primary btn-large form-control">DEPOSITAR</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>Mês</td>
+                                        <td>(R$) Inicial</td>
+                                        <td>(R$) Entrada</td>
+                                        <td>(R$) Rentabilidade</td>
+                                        <td>(R$) Valor Final</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.WalletClienteList)
+                                    {
+                                        if (Model.WalletClienteList.Count() > 0)
+                                        {
+                                            <tr>
+                                                <td class="hidden">@item.Id</td>
+                                                <td>@item.Mes</td>
+                                                <td>@item.ValorInicial</td>
+                                                <td>@item.ValorEntrada</td>
+                                                <td>@item.ValorRentabilidade</td>
+                                                <td>@item.ValorFinal</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="6">Ainda não há investimentos.</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <environment names="Development,Staging,Production">
+        <script src="~/lib/flot/jquery.flot.js"></script>
+        <script src="~/lib/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="~/lib/flot/jquery.flot.resize.js"></script>
+        <script src="~/lib/flot/jquery.flot.pie.js"></script>
+        <script src="~/lib/flot/jquery.flot.time.js"></script>
+        <script src="~/lib/flot/jquery.flot.spline.js"></script>
+        <script src="~/lib/sparkline/jquery.sparkline.min.js"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            var sparklineCharts = function () {
+                $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 52], {
+                    type: 'line',
+                    width: '100%',
+                    height: '50',
+                    lineColor: '#1ab394',
+                    fillColor: "transparent"
+                });
+            };
+
+            var sparkResize;
+
+            $(window).resize(function (e) {
+                clearTimeout(sparkResize);
+                sparkResize = setTimeout(sparklineCharts, 500);
+            });
+
+            sparklineCharts();
+
+
+
+
+            var data1 = [
+                [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0, [9, 0], [10, 0], [11, 0], [12, 0], [13, 0], [14, 0], [15, 0], [16, 0]
+                ];
+
+            var data2 = [
+                [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12]
+            ];
+
+            $("#flot-dashboard5-chart").length && $.plot($("#flot-dashboard5-chart"), [
+                data1, data2
+            ],
+                {
+                    series: {
+                        lines: {
+                            show: false,
+                            fill: true
+                        },
+                        splines: {
+                            show: true,
+                            tension: 0.4,
+                            lineWidth: 1,
+                            fill: 0.4
+                        },
+                        points: {
+                            radius: 0,
+                            show: true
+                        },
+                        shadowSize: 2
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+
+                        borderWidth: 2,
+                        color: 'transparent'
+                    },
+                    colors: ["#1ab394", "#1C84C6"],
+                    xaxis: {
+                    },
+                    yaxis: {
+                    },
+                    tooltip: false
+                }
+            );
+
+
+        });
+    </script>
+}
+
