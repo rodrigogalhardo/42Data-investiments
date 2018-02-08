@@ -11,8 +11,9 @@
 
             @if (SignInManager.IsSignedIn(User))
             {
+                var username = await UserManager.GetUserAsync(User);
                 <li>
-                    <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext">Welcome, @UserManager.GetUserName(User)</span>
+                    <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext">Welcome, @username.Name.ToLower()</span>
                 </li>
             }
 

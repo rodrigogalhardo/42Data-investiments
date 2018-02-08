@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using _42Data.Investiments.Web.Models;
 using _42Data.Investiments.Web.Models.AccountViewModels;
 using _42Data.Investiments.Web.Services;
+using System.Text.RegularExpressions;
 
 namespace _42Data.Investiments.Web.Controllers
 {
@@ -220,7 +221,9 @@ namespace _42Data.Investiments.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
+                var regex = new Regex("([^@]+)", RegexOptions.IgnoreCase);
+                var username = regex.Match(model.Email).Value;
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = $"@{username}" };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

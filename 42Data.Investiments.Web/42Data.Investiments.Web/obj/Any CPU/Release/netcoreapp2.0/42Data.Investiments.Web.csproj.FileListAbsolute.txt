@@ -1,0 +1,12 @@
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\bin\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.deps.json
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\bin\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.runtimeconfig.json
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\bin\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.runtimeconfig.dev.json
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\bin\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.dll
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\bin\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.pdb
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\obj\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.csprojResolveAssemblyReference.cache
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\obj\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.csproj.CoreCompileInputs.cache
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\obj\Any CPU\Release\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\obj\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.AssemblyInfoInputs.cache
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\obj\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.AssemblyInfo.cs
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\obj\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.dll
+C:\Users\galha\source\repos\42Data\42Data.Investiments.Web\42Data.Investiments.Web\obj\Any CPU\Release\netcoreapp2.0\42Data.Investiments.Web.pdb
