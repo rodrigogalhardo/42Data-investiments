@@ -1,6 +1,10 @@
 ﻿@using _42Data.Investiments.Web.Models.Wallet;
+@using Microsoft.AspNetCore.Identity
 
 @model WalletViewModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Dashboard_5";
@@ -13,7 +17,7 @@
 
             <div class="col-sm-4">
                 <h1 class="m-b-xs">
-                    @Model.SaldoTotal
+                    @Model.SaldoTotal.ToString("C2")
                 </h1>
                 <small>
                     Saldo total da sua conta
@@ -21,7 +25,7 @@
             </div>
             <div class="col-sm-4">
                 <h1 class="m-b-xs">
-                    @Model.LucroTotal
+                    @Model.LucroTotal.ToString("C2")
                 </h1>
                 <small>
                     (R$) Lucro total
@@ -32,12 +36,12 @@
                 <div class="row m-t-xs">
                     <div class="col-xs-6">
                         <h5 class="m-b-xs">(R$) Investimento Total</h5>
-                        <h1 class="no-margins">@Model.InvestimentoTotal</h1>
+                        <h1 class="no-margins">@Model.InvestimentoTotal.ToString("C2")</h1>
                         <div class="font-bold text-navy"></div>
                     </div>
                     <div class="col-xs-6">
                         <h5 class="m-b-xs">(R$) Comissão total paga</h5>
-                        <h1 class="no-margins">@Model.ComissaoTotalPaga</h1>
+                        <h1 class="no-margins">@Model.ComissaoTotalPaga.ToString("C2")</h1>
                         <div class="font-bold text-navy"></div>
                     </div>
                 </div>
@@ -54,8 +58,10 @@
                 <div class="small pull-right col-md-3 m-t-md text-right" hidden>
                     <strong>There are many</strong> variations of passages of Lorem Ipsum available, but the majority have suffered.
                 </div>
+                <br />
+                <br />
                 <div class="flot-chart m-b-xl">
-                    <div class="flot-chart-content" id="flot-dashboard5-chart"></div>
+                    <div id="chart_div"></div>
                 </div>
             </div>
         </div>
@@ -65,8 +71,14 @@
             <div class="col-lg-12">
                 <div class="ibox">
                     <div class="ibox-content">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            var username = await UserManager.GetUserAsync(User);
+                            Html.Hidden("username", username.Name);
+                            Html.Hidden("user_id", username.Id);
+                        }
 
-                        <div class="row">
+                        <div class="row" id="deposits_form" data-formpost="@Url.Action("MakeInvestiment","Dashboard")">
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="control-label" for="product_name">Tabela Mensal</label>
@@ -75,13 +87,13 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label class="control-label" for="price">(R$) Valor do deposito</label>
-                                    <input type="text" id="price" name="price" value="" placeholder="0,00" class="form-control">
+                                    <input type="text" id="price" name="price" value="" placeholder="0,00" class="form-control" maxlength="12" data-thousands="." data-decimal="," data-prefix="R$ " onkeypress="validate(event)">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label class="control-label" for="status">&nbsp;</label>
-                                    <button type="button" class="btn btn-primary btn-large form-control">DEPOSITAR</button>
+                                    <button type="button" id="makeDeposit" class="btn btn-primary btn-large form-control">DEPOSITAR</button>
                                 </div>
                             </div>
                         </div>
@@ -98,25 +110,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.WalletClienteList)
+                                    @if (Model != null)
                                     {
-                                        if (Model.WalletClienteList.Count() > 0)
+                                        if (Model.WalletClienteList != null)
                                         {
-                                            <tr>
-                                                <td class="hidden">@item.Id</td>
-                                                <td>@item.Mes</td>
-                                                <td>@item.ValorInicial</td>
-                                                <td>@item.ValorEntrada</td>
-                                                <td>@item.ValorRentabilidade</td>
-                                                <td>@item.ValorFinal</td>
-                                            </tr>
+                                            foreach (var item in Model.WalletClienteList)
+                                            {
+                                                <tr>
+                                                    <td class="hidden">@item.Id</td>
+                                                    <td>@item.Mes.ToString("MMM").ToUpper()</td>
+                                                    <td>@item.ValorInicial.ToString("C2")</td>
+                                                    <td>@item.ValorEntrada.ToString("C2")</td>
+                                                    <td>@item.ValorRentabilidade.ToString("C2")</td>
+                                                    <td>@item.ValorFinal.ToString("C2")</td>
+                                                </tr>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <tr>
-                                                <td colspan="6">Ainda não há investimentos.</td>
-                                            </tr>
-                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6">Ainda não há investimentos. :(</td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -129,6 +144,7 @@
 
     </div>
 
+    @Html.Hidden("urlgrafico", Url.Action("GraphData", "Dashboard"))
 
 </div>
 
@@ -141,81 +157,92 @@
         <script src="~/lib/flot/jquery.flot.time.js"></script>
         <script src="~/lib/flot/jquery.flot.spline.js"></script>
         <script src="~/lib/sparkline/jquery.sparkline.min.js"></script>
-    </environment>
 
+    </environment>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+
+        function validate(evt) {
+            var theEvent = evt || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+
+        $("#price").maskMoney();
+        
+        function CheckNumeric() {
+            return event.keyCode >= 48 && event.keyCode <= 57;
+        }
+
         $(document).ready(function () {
 
+            var graph_url = $("#urlgrafico").val();
 
-            var sparklineCharts = function () {
-                $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 52], {
-                    type: 'line',
-                    width: '100%',
-                    height: '50',
-                    lineColor: '#1ab394',
-                    fillColor: "transparent"
+            $.getJSON(graph_url, {}, function (response) {
+
+                console.log(response);
+
+                google.charts.load('current', { packages: ['corechart', 'line'] });
+                google.charts.setOnLoadCallback(function () {
+
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Mês');
+                    data.addColumn('number', 'Valor');
+
+                    //data.addRows([
+                    //    ['Jan', 0], ['Fev', 20], ['Mar', 30], ['Abr', 40], ['Jun', 67]
+                    //]);
+
+                    $.each(response, function (index, item) {
+                        data.addRow([item.mes, item.valor]);
+                    });
+
+
+                    var options = {
+                        hAxis: {
+                            title: 'Mês'
+                        },
+                        vAxis: {
+                            title: 'Rendimento'
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById("chart_div"));
+
+                    chart.draw(data, options);
                 });
-            };
-
-            var sparkResize;
-
-            $(window).resize(function (e) {
-                clearTimeout(sparkResize);
-                sparkResize = setTimeout(sparklineCharts, 500);
             });
 
-            sparklineCharts();
-
-
-
-
-            var data1 = [
-                [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0, [9, 0], [10, 0], [11, 0], [12, 0], [13, 0], [14, 0], [15, 0], [16, 0]
-                ];
-
-            var data2 = [
-                [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12]
-            ];
-
-            $("#flot-dashboard5-chart").length && $.plot($("#flot-dashboard5-chart"), [
-                data1, data2
-            ],
-                {
-                    series: {
-                        lines: {
-                            show: false,
-                            fill: true
-                        },
-                        splines: {
-                            show: true,
-                            tension: 0.4,
-                            lineWidth: 1,
-                            fill: 0.4
-                        },
-                        points: {
-                            radius: 0,
-                            show: true
-                        },
-                        shadowSize: 2
-                    },
-                    grid: {
-                        hoverable: true,
-                        clickable: true,
-
-                        borderWidth: 2,
-                        color: 'transparent'
-                    },
-                    colors: ["#1ab394", "#1C84C6"],
-                    xaxis: {
-                    },
-                    yaxis: {
-                    },
-                    tooltip: false
+            $("#makeDeposit").click(function () {
+                if ($("#price").val() != undefined || $("#price").val() != "") {
+                    PostDeposits();
+                } else {
+                    alert("Por favor, para fazer um deposito informe o valor que deseja depositar.");
                 }
-            );
+            });
 
+            function PostDeposits() {
+                var _obj = {
+                    Id: $("#user_id").val(),
+                    ValorDeposito: $("#price").val()
+                }
 
+                var _url = $("#deposits_form").data("formpost")
+
+                $.post(_url, _obj, function (response) {
+                    alert(response.mensagem);
+                }, "json")
+            }
         });
+
+
+
+
     </script>
 }
 

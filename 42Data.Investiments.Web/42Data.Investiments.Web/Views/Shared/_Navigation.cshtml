@@ -12,7 +12,7 @@
             <li class="nav-header">
                 <div class="dropdown profile-element">
                     <span>
-                        <img alt="image" class="img-circle" src="~/Images/profile_small.jpg" />
+                        @*<img alt="image" class="img-circle" src="~/Images/a1.jpg" />*@
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         @if (SignInManager.IsSignedIn(User))
@@ -22,7 +22,7 @@
                                     @{
                                         var username = await UserManager.GetUserAsync(User);
                                     }
-                                    <strong class="font-bold">@username.Name.ToLower()</strong>
+                                    <strong class="font-bold">@username.Name.ToUpperInvariant()</strong>
                                 </span> <span class="text-muted text-xs block">Investor <b class="caret"></b></span>
                             </span>
                         }
@@ -38,7 +38,7 @@
                 </div>
             </li>
             <li class="@Html.IsSelected(controller: "Dashboards")">
-                <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Dashboards</span> <span class="fa arrow"></span></a>
+                <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Menu</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboard", cssClass: "in")">
                     <li class="@Html.IsSelected(action: "Dashboard")"><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
                 </ul>

@@ -12,5 +12,6 @@ namespace _42Data.Investiments.Web.Models.Wallet
         public decimal InvestimentoTotal { get; set; }
         public decimal ComissaoTotalPaga { get; set; }
         public IEnumerable<WalletCliente> WalletClienteList { get; set; }
+        public List<object> Graph { get; set; }
     }
 }

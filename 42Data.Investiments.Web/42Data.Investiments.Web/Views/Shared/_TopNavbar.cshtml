@@ -11,20 +11,15 @@
 
             @if (SignInManager.IsSignedIn(User))
             {
-                var username = await UserManager.GetUserAsync(User);
+                var username = await UserManager.GetUserAsync(User).ContinueWith(t=>t.Result);
                 <li>
-                    <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext">Welcome, @username.Name.ToLower()</span>
+                    <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext">Welcome, @username.Name.ToUpperInvariant()</span>
                 </li>
             }
 
             <li>
                 <a href="@Url.Action("Logout", "Account")">
                     <i class="fa fa-sign-out"></i> Log out
-                </a>
-            </li>
-            <li>
-                <a class="right-sidebar-toggle">
-                    <i class="fa fa-tasks"></i>
                 </a>
             </li>
         </ul>
