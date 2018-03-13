@@ -11,7 +11,12 @@ namespace _42Data.Investiments.Web.Models.Wallet
         public decimal LucroTotal { get; set; }
         public decimal InvestimentoTotal { get; set; }
         public decimal ComissaoTotalPaga { get; set; }
-        public IEnumerable<WalletCliente> WalletClienteList { get; set; }
+        public decimal PlanoBold { get; set; }
+        public decimal PlanoWise { get; set; }
+        public string PlanoContratado { get; set; }
+        public decimal ValorSaqueWise { get; set; }
+        public decimal ValorSaqueBold { get; set; }
+        public IEnumerable<WalletClienteViewModel> WalletClienteList { get; set; }
         public List<object> Graph { get; set; }
     }
 }

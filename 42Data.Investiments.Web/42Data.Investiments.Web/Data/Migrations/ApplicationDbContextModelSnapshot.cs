@@ -81,22 +81,32 @@ namespace _42Data.Investiments.Web.Data.Migrations
 
                     b.Property<string>("ClientId");
 
+                    b.Property<DateTime>("DataContratacao");
+
                     b.Property<DateTime>("Mes");
 
-                    b.Property<decimal>("ValorComissaoTotal")
-                        .HasColumnType("money");
+                    b.Property<string>("PlanoContratado");
 
-                    b.Property<decimal>("ValorEntrada")
-                        .HasColumnType("money");
+                    b.Property<decimal>("ValorComissaoTotal")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("ValorEntradaBold")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("ValorEntradaWise")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("ValorFinal")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("ValorInicial")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("ValorRentabilidade")
-                        .HasColumnType("money");
+                    b.Property<decimal>("ValorRentabilidadeBold")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("ValorRentabilidadeWise")
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 

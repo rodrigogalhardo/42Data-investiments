@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using _42Data.Investiments.Web.Data;
+using _42Data.Investiments.Web.Data; 
 using _42Data.Investiments.Web.Models;
 using _42Data.Investiments.Web.Services;
 

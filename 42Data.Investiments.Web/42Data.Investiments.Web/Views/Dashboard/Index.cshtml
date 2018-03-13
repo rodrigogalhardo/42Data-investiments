@@ -8,6 +8,9 @@
 
 @{
     ViewData["Title"] = "Dashboard_5";
+
+    var investimentsURL = Url.Action("MakeInvestiment", "Dashboard");
+    var withdrawURL = Url.Action("MakeWithDraw", "Dashboard");
 }
 
 <div class="wrapper wrapper-content animated fadeIn">
@@ -66,6 +69,69 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Fazer um novo investimento</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label class="control-label" for="price">(R$) Valor do deposito</label>
+                            <input type="text" id="price" data-money="true" name="price" value="" placeholder="0,00" class="form-control" maxlength="12" data-thousands="." data-decimal="," data-prefix="R$ " onkeypress="validate(event)">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="PlanoContratado">Plano</label>
+                            <select id="PlanoContratado" class="form-control m-b">
+                                <option value="0">Selecione o plano</option>
+                                <option value="Bold">Plano Bold</option>
+                                <option value="Wise">Plano Wise</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="status">&nbsp;</label>
+                            <button type="button" id="makeDeposit" class="btn btn-success btn-large pull-right">DEPOSITAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Fazer um novo saque</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label class="control-label" for="price">(R$) Valor do saque</label>
+                            <input type="text" id="price-draw" data-money="true" name="price" value="" placeholder="0,00" class="form-control" maxlength="12" data-thousands="." data-decimal="," data-prefix="R$ " onkeypress="validate(event)">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="PlanoContratado">Plano</label>
+                            <select id="PlanoSaque" class="form-control m-b">
+                                <option value="0">Qual o plano quer sacar?</option>
+                                <option value="Bold">Plano Bold</option>
+                                <option value="Wise">Plano Wise</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="status">&nbsp;</label>
+                            <button type="button" id="makeDraw" class="btn btn-warning btn-large pull-right">SAQUE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-lg-12">
@@ -84,18 +150,7 @@
                                     <label class="control-label" for="product_name">Tabela Mensal</label>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label class="control-label" for="price">(R$) Valor do deposito</label>
-                                    <input type="text" id="price" name="price" value="" placeholder="0,00" class="form-control" maxlength="12" data-thousands="." data-decimal="," data-prefix="R$ " onkeypress="validate(event)">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label class="control-label" for="status">&nbsp;</label>
-                                    <button type="button" id="makeDeposit" class="btn btn-primary btn-large form-control">DEPOSITAR</button>
-                                </div>
-                            </div>
+
                         </div>
 
                         <div class="table-responsive">
@@ -104,8 +159,12 @@
                                     <tr>
                                         <td>Mês</td>
                                         <td>(R$) Inicial</td>
-                                        <td>(R$) Entrada</td>
-                                        <td>(R$) Rentabilidade</td>
+                                        <td>(R$) Entrada (Bold)</td>
+                                        <td>(R$) Saída (Bold)</td>
+                                        <td>(R$) Rentabilidade (Bold)</td>
+                                        <td>(R$) Entrada (Wise)</td>
+                                        <td>(R$) Saída (Wise)</td>
+                                        <td>(R$) Rentabilidade (Wise)</td>
                                         <td>(R$) Valor Final</td>
                                     </tr>
                                 </thead>
@@ -116,14 +175,18 @@
                                         {
                                             foreach (var item in Model.WalletClienteList)
                                             {
-                                                <tr>
-                                                    <td class="hidden">@item.Id</td>
-                                                    <td>@item.Mes.ToString("MMM").ToUpper()</td>
-                                                    <td>@item.ValorInicial.ToString("C2")</td>
-                                                    <td>@item.ValorEntrada.ToString("C2")</td>
-                                                    <td>@item.ValorRentabilidade.ToString("C2")</td>
-                                                    <td>@item.ValorFinal.ToString("C2")</td>
-                                                </tr>
+                                    <tr>
+                                        <td class="hidden">@item.Id</td>
+                                        <td>@item.Mes.ToString("MMM").ToUpper()</td>
+                                        <td>@item.ValorInicial.ToString("C2")</td>
+                                        <td>@item.ValorEntradaBold.ToString("C2")</td>
+                                        <td>@item.ValorSaqueBold.ToString("C2")</td>
+                                        <td>@item.ValorRentabilidadeBold.ToString("C2")</td>
+                                        <td>@item.ValorEntradaWise.ToString("C2")</td>
+                                        <td>@item.ValorSaqueWise.ToString("C2")</td>
+                                        <td>@item.ValorRentabilidadeWise.ToString("C2")</td>
+                                        <td>@item.ValorFinal.ToString("C2")</td>
+                                    </tr>
                                             }
                                         }
                                     }
@@ -146,6 +209,24 @@
 
     @Html.Hidden("urlgrafico", Url.Action("GraphData", "Dashboard"))
 
+</div>
+
+<!-- modal alerta -->
+<div class="modal inmodal" id="modal-alerta" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; padding-right: 17px;">
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-clock-o modal-icon"></i>
+                <h4 class="modal-title">Hummm.. :)</h4>
+                <small style="font-size:22px;" id="text-message-modal"> </small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Ok.</button>
+                @*<button type="button" class="btn btn-primary">OK, entendi.</button>*@
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -174,7 +255,8 @@
         }
 
         $("#price").maskMoney();
-        
+        $("#price-draw").maskMoney();
+
         function CheckNumeric() {
             return event.keyCode >= 48 && event.keyCode <= 57;
         }
@@ -219,28 +301,63 @@
             });
 
             $("#makeDeposit").click(function () {
-                if ($("#price").val() != undefined || $("#price").val() != "") {
+
+                if ($("#price").val() == "") {
+                    showAlertModal("Por favor, para fazer um deposito informe o valor que deseja depositar.");
+                    return;
+                }
+                else if ($("select#PlanoContratado").val() == "0") {
+                    showAlertModal("Por favor, selecione um plano para fazer o seu investimento.");
+                }
+                else {
                     PostDeposits();
-                } else {
-                    alert("Por favor, para fazer um deposito informe o valor que deseja depositar.");
+                }
+
+            });
+
+            $("#makeDraw").click(function () {
+                if ($("#price-draw").val() == "") {
+                    showAlertModal("Por favor, para fazer um saque informe o valor que deseja retirar.");
+                    return;
+                }
+                else if ($("select#PlanoSaque").val() == "0") {
+                    showAlertModal("Por favor, selecione um plano para fazer o seu investimento.");
+                }
+                else {
+                    var _obj = {
+                        Id: $("#user_id").val(),
+                        ValorDeposito: $("#price").val(),
+                        PlanoContratado: $("select#PlanoContratado").val()
+                    }
+
+                    var _url = @withdrawURL;
+
+                    $.post(_url, _obj, function (response) {
+                        alert(response.mensagem);
+                    }, "json");
                 }
             });
 
             function PostDeposits() {
+
                 var _obj = {
                     Id: $("#user_id").val(),
-                    ValorDeposito: $("#price").val()
+                    ValorDeposito: $("#price").val(),
+                    PlanoContratado: $("select#PlanoContratado").val()
                 }
 
-                var _url = $("#deposits_form").data("formpost")
+                var _url = @investimentsURL;
 
                 $.post(_url, _obj, function (response) {
                     alert(response.mensagem);
-                }, "json")
+                }, "json");
+            }
+
+            function showAlertModal(message) {
+                $("#text-message-modal").text(message);
+                $("#modal-alerta").modal("show");
             }
         });
-
-
 
 
     </script>

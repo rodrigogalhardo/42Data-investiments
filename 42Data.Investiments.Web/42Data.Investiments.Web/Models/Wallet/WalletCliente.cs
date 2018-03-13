@@ -16,20 +16,23 @@ namespace _42Data.Investiments.Web.Models.Wallet
         public string ClientId { get; set; }
 
         public DateTime Mes { get; set; }
+        
+        public string PlanoContratado { get; set; }
 
-        [Column(TypeName = "money")]
         public decimal ValorInicial { get; set; }
-
-        [Column(TypeName = "money")]
-        public decimal ValorEntrada { get; set; }
-
-        [Column(TypeName = "money")]
-        public decimal ValorRentabilidade { get; set; }
-
-        [Column(TypeName = "money")]
+        
+        public decimal ValorEntradaWise { get; set; }
+        
+        public decimal ValorEntradaBold { get; set; }
+        
+        public decimal ValorRentabilidadeWise { get; set; }
+        
+        public decimal ValorRentabilidadeBold { get; set; }
+        
         public decimal ValorFinal { get; set; }
-
-        [Column(TypeName = "money")]
+        
         public decimal ValorComissaoTotal { get; set; }
+
+        public DateTime DataContratacao { get; set; }
     }
 }
